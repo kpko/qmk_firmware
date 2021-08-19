@@ -110,7 +110,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       rgb_matrix_set_color(LED_J, RGB_NEON_CYAN);
       rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
       rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
-      rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_CYAN);
+      rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_PINK);
       rgb_set_side_colors(RGB_NEON_PINK);
       break;
     default:
