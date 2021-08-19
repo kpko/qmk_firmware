@@ -25,6 +25,12 @@
     #define RGB_NORD_GREEN_LIGHT 0x8F, 0xBC, 0xBB
     #define RGB_NORD_VIOLET 0xB4, 0x8E, 0xAD
 
+    // neo tokyo
+    #define RGB_NEON_PINK 0xEA, 0x00, 0xD9
+    #define RGB_NEON_LIGHT_PINK 0x71, 0x1C, 0x91
+    #define RGB_NEON_CYAN 0x0A, 0xBD, 0xC6
+    #define RGB_OFF 0x00, 0x00, 0x00
+
     // RGB LED locations
     enum led_location_map {
         LED_ESC, // 0, ESC, k13
@@ -133,7 +139,8 @@
 
     const uint8_t LED_LIST_FUNCROW[] = { LED_ESC, LED_F1, LED_F2, LED_F3, LED_F4, LED_F5, LED_F6, LED_F7, LED_F8, LED_F9, LED_F10, LED_F11, LED_F12, LED_PSCR};
 
-    const uint8_t LED_LIST_NUMROW[] = { LED_GRV, LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7, LED_8, LED_9, LED_0, LED_MINS, LED_EQL, LED_BSPC, LED_DEL};
+    const uint8_t LED_LIST_NUMROW_FULL[] = { LED_GRV, LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7, LED_8, LED_9, LED_0, LED_MINS, LED_EQL, LED_BSPC, LED_DEL};
+    const uint8_t LED_LIST_NUMROW[] = { LED_1, LED_2, LED_3, LED_4, LED_5, LED_6, LED_7, LED_8, LED_9, LED_0 };
 
     const uint8_t LED_LIST_NUMPAD[] = {
         LED_7, LED_8, LED_9,

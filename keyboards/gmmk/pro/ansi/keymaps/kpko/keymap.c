@@ -99,25 +99,28 @@ void rgb_set_side_colors(uint8_t r, uint8_t g, uint8_t b) {
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   switch(get_highest_layer(layer_state)){  // special handling per layer
     case _FUN:
-      rgb_matrix_set_color_all(RGB_NORD_YELLOW);
+      rgb_matrix_set_color_all(RGB_OFF);
       rgb_matrix_set_color(LED_BSLS, RGB_RED);
+      rgb_matrix_set_color(LED_1, RGB_NEON_PINK);
+      rgb_matrix_set_color(LED_N, RGB_NEON_PINK);
       break;
     case _VIM:
-      rgb_matrix_set_color_all(0x00, 0x00, 0x00);
-      rgb_matrix_set_color(LED_H, 0x71, 0x1C, 0x91);
-      rgb_matrix_set_color(LED_J, 0x71, 0x1C, 0x91);
-      rgb_matrix_set_color(LED_K, 0x71, 0x1C, 0x91);
-      rgb_matrix_set_color(LED_L, 0x71, 0x1C, 0x91);
-      rgb_set_side_colors(0xEA, 0x00, 0xD9);
+      rgb_matrix_set_color_all(RGB_OFF);
+      rgb_matrix_set_color(LED_H, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_J, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
+      rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_CYAN);
+      rgb_set_side_colors(RGB_NEON_PINK);
       break;
     default:
-      rgb_matrix_set_color_all(0xEA, 0x00, 0xD9); // Default startup colour
-      rgb_set_side_colors(0x0A, 0xBD, 0xC6);
+      rgb_matrix_set_color_all(RGB_NEON_PINK); // Default startup colour
+      rgb_set_side_colors(RGB_NEON_CYAN);
 
-      rgb_matrix_set_color(LED_H, 0x0A, 0xBD, 0xC6);
-      rgb_matrix_set_color(LED_J, 0x0A, 0xBD, 0xC6);
-      rgb_matrix_set_color(LED_K, 0x0A, 0xBD, 0xC6);
-      rgb_matrix_set_color(LED_L, 0x0A, 0xBD, 0xC6);
+      rgb_matrix_set_color(LED_H, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_J, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
 
       /* rgb_matrix_set_color(LED_1, RGB_NORD_RED); */
       /* rgb_matrix_set_color(LED_2, RGB_NORD_BRIGHT); */
