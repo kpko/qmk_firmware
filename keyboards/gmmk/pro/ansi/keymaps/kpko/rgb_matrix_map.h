@@ -29,7 +29,6 @@
     #define RGB_NEON_PINK 0xEA, 0x00, 0xD9
     #define RGB_NEON_LIGHT_PINK 0x71, 0x1C, 0x91
     #define RGB_NEON_CYAN 0x0A, 0xBD, 0xC6
-    #define RGB_OFF 0x00, 0x00, 0x00
 
     // RGB LED locations
     enum led_location_map {
