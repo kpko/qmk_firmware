@@ -1,6 +1,10 @@
-#include QMK_KEYBOARD_H
+// my dz60rgb ansi 2.1 layout - kpko
 
-// dz60rgb ansi 2.1
+#include QMK_KEYBOARD_H
+#include "rgb_matrix_map.h"
+
+#define ARRAYSIZE(arr)  sizeof(arr)/sizeof(arr[0])
+
 #define _BASE 0
 #define _FUN 1
 #define _VIM 2
@@ -28,3 +32,58 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______,          _______,                   _______,                            _______, _______,          _______, _______
     ),
 };
+
+// RGB
+#ifdef RGB_MATRIX_ENABLE
+void rgb_set_list(const uint8_t* list, size_t list_size, uint8_t r, uint8_t g, uint8_t b) {
+  for (uint8_t i=0; i<list_size; i++) {
+    rgb_matrix_set_color(list[i], r, g, b);
+  }
+}
+
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+  switch(get_highest_layer(layer_state)){ 
+    case _FUN:
+      rgb_matrix_set_color_all(RGB_OFF);
+      rgb_matrix_set_color(LED_BSLS, RGB_RED);
+      rgb_matrix_set_color(LED_1, RGB_NEON_PINK);
+      rgb_matrix_set_color(LED_N, RGB_NEON_PINK);
+      break;
+    case _VIM:
+      rgb_matrix_set_color_all(RGB_OFF);
+      rgb_matrix_set_color(LED_H, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_J, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
+      rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_PINK);
+      break;
+    default:
+      rgb_matrix_set_color_all(RGB_NEON_PINK); // Default startup colour
+
+      rgb_matrix_set_color(LED_H, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_J, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
+
+      /* rgb_matrix_set_color(LED_1, RGB_NORD_RED); */
+      /* rgb_matrix_set_color(LED_2, RGB_NORD_BRIGHT); */
+      /* rgb_matrix_set_color(LED_3, RGB_NORD_VIOLET); */
+      /* rgb_matrix_set_color(LED_4, RGB_NORD_YELLOW); */
+      /* rgb_matrix_set_color(LED_5, 0x71, 0x1C, 0x91); */
+      /* rgb_matrix_set_color(LED_6, 0xEA, 0x00, 0xD9); */
+      /* rgb_matrix_set_color(LED_7, 0x0A, 0xBD, 0xC6); */
+      /* rgb_matrix_set_color(LED_8, 0x3B, 0x55, 0xCE); */
+      break;
+  }
+
+  if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
+    rgb_matrix_set_color(LED_ESC, RGB_RED);
+  }
+}
+#endif
+
+void keyboard_post_init_user(void) {
+    #ifdef RGB_MATRIX_ENABLE
+        rgb_matrix_set_color_all(0xEA, 0x00, 0xD9); // Default startup colour
+    #endif
+}
