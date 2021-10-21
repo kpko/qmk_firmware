@@ -2,12 +2,19 @@
 
 #include QMK_KEYBOARD_H
 #include "rgb_matrix_map.h"
+#include "version.h"
 
 #define ARRAYSIZE(arr)  sizeof(arr)/sizeof(arr[0])
 
 #define _BASE 0
 #define _FUN 1
 #define _VIM 2
+
+enum my_keycodes {
+  UK_LOCKVIM = SAFE_RANGE,
+  UK_MYTEST,
+  UK_VRSN
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_60_ansi(
@@ -22,16 +29,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,          RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, _______, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, KC_INS,  KC_HOME, KC_PGUP, _______,
         _______,          _______, _______, BL_DEC,  BL_TOGG, BL_INC,  BL_STEP, _______, KC_DEL,  KC_END,  KC_PGDN,          _______,
-        _______, _______,          _______,                   _______,                            _______, _______,          _______, _______
+        _______, _______,          _______,                   _______,                            _______, _______,          _______, UK_VRSN
     ),
     [_VIM] = LAYOUT_60_ansi(
         KC_CAPS, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,           _______,
-        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______,          _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN,  KC_UP, KC_RIGHT, _______, _______, _______,
+        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLD, KC_VOLU, KC_MUTE,
+        DF(_BASE),        _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN,  KC_UP, KC_RIGHT, _______, _______, _______,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______,          _______,                   _______,                            _______, _______,          _______, _______
-    ),
+        _______, _______,          _______,                  DF(_VIM),                            _______, _______,          _______, _______
+    )
 };
+
+/* bool _vim_locked = false; */
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case UK_VRSN:
+      if (record->event.pressed) {
+        SEND_STRING(QMK_KEYBOARD"/"QMK_KEYMAP" @ "QMK_VERSION);
+      }
+      return false; // Skip all further processing of this key
+    default:
+      return true; // Process all other keycodes normally
+  }
+}
 
 // RGB
 #ifdef RGB_MATRIX_ENABLE
@@ -41,13 +61,30 @@ void rgb_set_list(const uint8_t* list, size_t list_size, uint8_t r, uint8_t g, u
   }
 }
 
+void highlight_debug_keys(void) {
+  rgb_matrix_set_color(LED_5, RGB_GREEN);
+
+  rgb_matrix_set_color(LED_9, RGB_RED);
+  rgb_matrix_set_color(LED_0, RGB_BLUE);
+  rgb_matrix_set_color(LED_MINS, RGB_BLUE);
+  rgb_matrix_set_color(LED_EQL, RGB_WHITE);
+}
+
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-  switch(get_highest_layer(layer_state)){ 
+  uint8_t layer = get_highest_layer(layer_state);
+
+  // If we set _VIM as default layer, we want to highlight as we do in _VIM 
+  if(biton32(default_layer_state) == _VIM) {
+      layer = _VIM;
+  }
+
+  switch(layer){ 
     case _FUN:
       rgb_matrix_set_color_all(RGB_OFF);
       rgb_matrix_set_color(LED_BSLS, RGB_RED);
       rgb_matrix_set_color(LED_1, RGB_NEON_PINK);
       rgb_matrix_set_color(LED_N, RGB_NEON_PINK);
+      highlight_debug_keys();
       break;
     case _VIM:
       rgb_matrix_set_color_all(RGB_OFF);
@@ -56,6 +93,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
       rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
       rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_PINK);
+      highlight_debug_keys();
       break;
     default:
       rgb_matrix_set_color_all(RGB_NEON_PINK); // Default startup colour
@@ -65,14 +103,10 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       rgb_matrix_set_color(LED_K, RGB_NEON_CYAN);
       rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
 
-      /* rgb_matrix_set_color(LED_1, RGB_NORD_RED); */
-      /* rgb_matrix_set_color(LED_2, RGB_NORD_BRIGHT); */
-      /* rgb_matrix_set_color(LED_3, RGB_NORD_VIOLET); */
-      /* rgb_matrix_set_color(LED_4, RGB_NORD_YELLOW); */
-      /* rgb_matrix_set_color(LED_5, 0x71, 0x1C, 0x91); */
-      /* rgb_matrix_set_color(LED_6, 0xEA, 0x00, 0xD9); */
-      /* rgb_matrix_set_color(LED_7, 0x0A, 0xBD, 0xC6); */
-      /* rgb_matrix_set_color(LED_8, 0x3B, 0x55, 0xCE); */
+      rgb_matrix_set_color(LED_ESC, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_BSPC, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_LCTL, RGB_NEON_CYAN);
+      rgb_matrix_set_color(LED_RCTL, RGB_NEON_CYAN);
       break;
   }
 
