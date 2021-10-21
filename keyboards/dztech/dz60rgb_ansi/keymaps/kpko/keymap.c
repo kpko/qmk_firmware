@@ -152,6 +152,13 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
       break;
   }
+      
+  /* int leds = led_max - led_min; */
+  /* for (uint8_t i = led_min; i <= led_max; i++) { */
+  /*   HSV hsvi = {255 / leds * i, 255, 255 / leds * (led_min - i) * timer_read()}; */
+  /*   RGB rgbi = hsv_to_rgb(hsvi); */
+  /*   rgb_matrix_set_color(i, rgbi.r, rgbi.g, rgbi.b); */
+  /* } */
 
   if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
     rgb_matrix_set_color(LED_ESC, RGB_RED);
