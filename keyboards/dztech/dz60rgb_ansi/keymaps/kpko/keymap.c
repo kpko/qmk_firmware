@@ -106,9 +106,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       rgb_matrix_set_color(LED_Q, RGB_RED);
       highlight_debug_keys();
 
-      rgb_matrix_set_color(LED_LCTL, RGB_GREEN); // enable hrm
-      rgb_matrix_set_color(LED_LGUI, RGB_RED); // disable hrm
-
+      rgb_matrix_set_color(LED_LCTL, RGB_GREEN); // toggle hrm
       rgb_matrix_set_color(LED_RCTL, RGB_WHITE); // version
       break;
     case _VIM:
