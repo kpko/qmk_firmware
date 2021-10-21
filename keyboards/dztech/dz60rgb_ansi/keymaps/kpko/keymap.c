@@ -25,7 +25,8 @@
 #define HOME_SC RGUI_T(KC_SCLN)
 
 enum my_keycodes {
-  UK_VRSN = SAFE_RANGE
+  UK_VRSN = SAFE_RANGE,
+  UK_LISA
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -53,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_VIM] = LAYOUT_60_ansi(
         KC_CAPS, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,           _______,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLD, KC_VOLU, KC_MUTE,
-        TG(_VIM),         _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN,  KC_UP, KC_RIGHT, _______, _______, _______,
+        TG(_VIM),         UK_LISA, _______, _______, _______, _______, KC_LEFT, KC_DOWN,  KC_UP, KC_RIGHT, _______, _______, _______,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______, _______,          _______,                   _______,                            _______, _______,          _______, _______
     )
@@ -65,6 +66,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case UK_VRSN:
       if (record->event.pressed) {
         SEND_STRING(QMK_KEYBOARD"/"QMK_KEYMAP" @ "QMK_VERSION);
+      }
+      return false; // Skip all further processing of this key
+    case UK_LISA:
+      if (record->event.pressed) {
+        SEND_STRING("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. ");
       }
       return false; // Skip all further processing of this key
     default:
@@ -117,6 +123,8 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       rgb_matrix_set_color(LED_L, RGB_NEON_CYAN);
       rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_PINK);
       highlight_debug_keys();
+
+      rgb_matrix_set_color(LED_A, RGB_RED);
       break;
     case _BASEHRM:
       hrm = true;
