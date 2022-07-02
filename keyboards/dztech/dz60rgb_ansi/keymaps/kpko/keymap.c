@@ -47,8 +47,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FUN] = LAYOUT_60_ansi(
         KC_CAPS, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,           KC_DEL,
         _______,          RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, _______, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
-        TG(_VIM),         _______, _______, _______, _______, _______, _______, _______, _______, KC_INS,  KC_HOME, KC_PGUP, _______,
-        _______,          _______, _______, BL_DEC,  BL_TOGG, BL_INC,  BL_STEP, _______, KC_DEL,  KC_END,  KC_PGDN,          _______,
+        TG(_VIM),         _______, _______, BL_DEC,  BL_TOGG, BL_INC,  BL_STEP, _______, _______, KC_INS,  KC_HOME, KC_PGUP, _______,
+        _______,          _______, _______, _______, _______, _______, NK_TOGG, _______, KC_DEL,  KC_END,  KC_PGDN,          _______,
         TG(_BASEHRM),     _______, _______,                   _______,                            _______, _______,          _______, UK_VRSN
     ),
     [_VIM] = LAYOUT_60_ansi(
@@ -108,12 +108,18 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   switch(layer){ 
     case _FUN:
       rgb_matrix_set_color_all(RGB_OFF);
-      rgb_matrix_set_color(LED_N, RGB_NEON_PINK);
+      //rgb_matrix_set_color(LED_N, RGB_NEON_PINK);
       rgb_matrix_set_color(LED_Q, RGB_RED);
       highlight_debug_keys();
 
       rgb_matrix_set_color(LED_LCTL, RGB_GREEN); // toggle hrm
       rgb_matrix_set_color(LED_RCTL, RGB_WHITE); // version
+
+      if(keymap_config.nkro) {
+        rgb_matrix_set_color(LED_N, RGB_RED);
+      } else {
+        rgb_matrix_set_color(LED_N, RGB_GREEN);
+      }
       break;
     case _VIM:
       rgb_matrix_set_color_all(RGB_OFF);
