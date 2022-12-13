@@ -206,7 +206,44 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif // OLED_ENABLE
 //
 #if RGB_MATRIX_ENABLE
+#define RGB_NEON_PINK 0xEA, 0x00, 0xD9
+#define RGB_NEON_LIGHT_PINK 0x71, 0x1C, 0x91
+#define RGB_NEON_CYAN 0x0A, 0xBD, 0xC6
+
 void keyboard_post_init_user(void) {
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+  //rgb_matrix_set_color_all(RGB_NEON_PINK);
+  //rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
 }
+
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    //rgb_matrix_set_color_all(RGB_NEON_PINK);
+
+    /* rgb_matrix_set_color(19, 0xEB, 0xCB, 0x8B); */
+    /* rgb_matrix_set_color(49, RGB_NEON_CYAN); */
+    /* rgb_matrix_set_color(46, RGB_NEON_CYAN); */
+    /* rgb_matrix_set_color(43, RGB_NEON_CYAN); */
+    /* rgb_matrix_set_color(38, RGB_NEON_CYAN); */
+}
+
+
+/* // Custom RGB Colours */
+/* #define RGB_NORD_BASE 0x2E, 0x34, 0x40 */
+/* #define RGB_NORD_BRIGHT 0x4C, 0x56, 0x6A */
+/* #define RGB_NORD_RED 0xBF, 0x61, 0x6A */
+/* #define RGB_NORD_YELLOW 0xEB, 0xCB, 0x8B */
+/* #define RGB_NORD_GREEN 0xA3, 0xBE, 0x8C */
+/* #define RGB_NORD_GREEN_LIGHT 0x8F, 0xBC, 0xBB */
+/* #define RGB_NORD_VIOLET 0xB4, 0x8E, 0xAD */
+
+/* // neo tokyo */
+/* led_config_t g_led_config = { { */
+/*     {  24,  23,  18,  17,  10,   9 }, */
+/*     {  25,  22,  19,  16,  11,   8 }, */
+/*     {  26,  21,  20,  15,  12,   7 }, */
+/*     { NO_LED, NO_LED, NO_LED,  14,  13,   6 }, */
+/*     {  51,  50,  45,  44,  37,  36 }, */
+/*     {  52,  49,  46,  43,  38,  35 }, */
+/*     {  53,  48,  47,  42,  39,  34 }, */
+/*     { NO_LED, NO_LED, NO_LED,  41,  40,  33 } */
+/* }, { */
 #endif
