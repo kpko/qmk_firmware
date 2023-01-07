@@ -334,9 +334,7 @@ void keyboard_post_init_user(void) {
   //rgblight_sethsv_range(HSV_NEON_PINK, 0, 27);
   //rgblight_sethsv_slave(HSV_NEON_CYAN);
   rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-  custom_set_color(0, RGB_NEON_CYAN); 
-  custom_set_color(1, RGB_NEON_CYAN); 
-  custom_set_color(2, RGB_NEON_PINK); 
+  custom_set_color_all(RGB_NEON_PINK); 
 }
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
@@ -344,10 +342,10 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
   switch(layer){ 
     case _VIM:
-      /* custom_set_color_all(RGB_YELLOW); */
+      custom_set_color_all(RGB_NEON_PINK); 
       break;
     case _LOWER:
-      /* custom_set_color_all(RGB_BLUE); */
+      custom_set_color_all(RGB_NEON_PINK); 
 
       /* rgb_matrix_set_color(LED_H, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_J, RGB_NEON_CYAN); */
@@ -383,6 +381,8 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       custom_set_color(LED_O, RGB_NEON_CYAN);
       break;
     case _RAISE:
+      // default color
+      custom_set_color_all(RGB_NEON_PINK); 
       break;
     case _ADJUST:
       custom_set_color_all(RGB_RED);
