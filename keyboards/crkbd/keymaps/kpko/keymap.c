@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, RGB_VAD, RGB_VAI, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -217,16 +217,65 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #if RGB_MATRIX_ENABLE
 
-//  // left half
-//  24 23 18 17 10  9
-//  25 22 19 16 11  8 
-//  26 21 20 15 12  7 
-//           14 13  6 
-//  // right half
-//  36 37 44 45 50 51
-//  35 38 43 46 49 52
-//  34 39 42 47 48 53
-//  41 40 33
+/* LED_TAB,LED_Q,LED_W,LED_E,LED_R,LED_T,LED_Y,LED_U,LED_I,LED_O,LED_P,LED_BSPC, */
+/* LED_ESCV,LED_A,LED_S,LED_D,LED_F,LED_G,LED_H,LED_J,LED_K,LED_L,LED_SCLN,LED_QUOV, */
+/* LED_LSFT,LED_CTLZ,MT_ALTX,LED_C,LED_V,LED_B,LED_N,LED_M,LED_COMM,LED_DOT,LED_CTLS,LED_ESC, */
+/* LED_LGUI,LED_LOWER,LED_SPC,LED_ENT,LED_RAISE,LED_RALT */
+/* //  // left half */
+/* //  24 23 18 17 10  9 */
+/* //  25 22 19 16 11  8 */ 
+/* //  26 21 20 15 12  7 */ 
+/* //           14 13  6 */ 
+/* //  // right half */
+/* //  36 37 44 45 50 51 */
+/* //  35 38 43 46 49 52 */
+/* //  34 39 42 47 48 53 */
+/* //  41 40 33 */
+
+enum led_loc_map {
+  LED_TAB = 24,
+  LED_Q = 23,
+  LED_W = 18,
+  LED_E = 17,
+  LED_R = 10,
+  LED_T = 9,
+  LED_Y = 36,
+  LED_U = 37,
+  LED_I = 44,
+  LED_O = 45,
+  LED_P = 50,
+  LED_BSPC = 51,
+  LED_ESCV = 25,
+  LED_A = 22,
+  LED_S = 19,
+  LED_D = 16,
+  LED_F = 11,
+  LED_G = 8,
+  LED_H = 35,
+  LED_J = 38,
+  LED_K = 43,
+  LED_L = 46,
+  LED_SCLN = 49,
+  LED_QUOV = 52,
+  LED_LSFT = 26,
+  LED_CTLZ = 21,
+  LED_ALTX = 20,
+  LED_C = 15,
+  LED_V = 12,
+  LED_B = 7,
+  LED_N = 34,
+  LED_M = 39,
+  LED_COMM = 42,
+  LED_DOT = 47,
+  LED_CTLS = 48,
+  LED_ESC = 53,
+  LED_LGUI = 14,
+  LED_LOWER = 13,
+  LED_SPC = 6,
+  LED_ENT = 41,
+  LED_RAISE = 40,
+  LED_RALT = 33
+};
 
 HSV rgb_to_hsv(RGB rgb)
 {
@@ -295,10 +344,11 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
   switch(layer){ 
     case _VIM:
-      custom_set_color_all(RGB_YELLOW);
+      /* custom_set_color_all(RGB_YELLOW); */
       break;
     case _LOWER:
-      custom_set_color_all(RGB_BLUE);
+      /* custom_set_color_all(RGB_BLUE); */
+
       /* rgb_matrix_set_color(LED_H, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_J, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_K, RGB_NEON_CYAN); */
@@ -306,7 +356,31 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       /* rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_PINK); */
       /* highlight_debug_keys(); */
 
-      custom_set_color(1, RGB_RED); 
+      // F keys
+      custom_set_color(LED_Q, RGB_NEON_CYAN);
+      custom_set_color(LED_W, RGB_NEON_CYAN);
+      custom_set_color(LED_E, RGB_NEON_CYAN);
+      custom_set_color(LED_R, RGB_NEON_CYAN);
+      custom_set_color(LED_T, RGB_NEON_CYAN);
+      custom_set_color(LED_A, RGB_NEON_CYAN);
+      custom_set_color(LED_S, RGB_NEON_CYAN);
+      custom_set_color(LED_D, RGB_NEON_CYAN);
+      custom_set_color(LED_F, RGB_NEON_CYAN);
+      custom_set_color(LED_G, RGB_NEON_CYAN);
+      custom_set_color(LED_CTLZ, RGB_NEON_CYAN);
+      custom_set_color(LED_ALTX, RGB_NEON_CYAN);
+
+      // num block 
+      custom_set_color(LED_N, RGB_NEON_CYAN);
+      custom_set_color(LED_M, RGB_NEON_CYAN);
+      custom_set_color(LED_COMM, RGB_NEON_CYAN);
+      custom_set_color(LED_DOT, RGB_NEON_CYAN);
+      custom_set_color(LED_J, RGB_NEON_CYAN);
+      custom_set_color(LED_K, RGB_NEON_CYAN);
+      custom_set_color(LED_L, RGB_NEON_CYAN);
+      custom_set_color(LED_U, RGB_NEON_CYAN);
+      custom_set_color(LED_I, RGB_NEON_CYAN);
+      custom_set_color(LED_O, RGB_NEON_CYAN);
       break;
     case _RAISE:
       break;
@@ -318,10 +392,10 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       custom_set_color_all(RGB_NEON_PINK); 
 
       // hjkl 
-      custom_set_color(34, RGB_NEON_CYAN); 
-      custom_set_color(39, RGB_NEON_CYAN); 
-      custom_set_color(42, RGB_NEON_CYAN); 
-      custom_set_color(47, RGB_NEON_CYAN); 
+      custom_set_color(LED_M, RGB_NEON_CYAN); 
+      custom_set_color(LED_N, RGB_NEON_CYAN); 
+      custom_set_color(LED_COMM, RGB_NEON_CYAN); 
+      custom_set_color(LED_DOT, RGB_NEON_CYAN); 
       /* rgb_matrix_set_color(LED_ESC, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_BSPC, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_LCTL, RGB_NEON_CYAN); */
