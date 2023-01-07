@@ -25,6 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MT_CTLS MT(MOD_RCTL, KC_SLSH)
 #define MT_ALTX MT(MOD_LALT, KC_X)
 //#define MT_ALTS MT(MOD_RCTL, KC_SLSH)
+//
+#define _DEFAULT 0
+#define _VIM 1
+#define _LOWER 2
+#define _RAISE 3
+#define _ADJUST 4
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_split_3x6_3(
@@ -204,25 +210,128 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 #endif // OLED_ENABLE
-//
-#if RGB_MATRIX_ENABLE
+
 #define RGB_NEON_PINK 0xEA, 0x00, 0xD9
 #define RGB_NEON_LIGHT_PINK 0x71, 0x1C, 0x91
 #define RGB_NEON_CYAN 0x0A, 0xBD, 0xC6
 
+#if RGB_MATRIX_ENABLE
+
+//  // left half
+//  24 23 18 17 10  9
+//  25 22 19 16 11  8 
+//  26 21 20 15 12  7 
+//           14 13  6 
+//  // right half
+//  36 37 44 45 50 51
+//  35 38 43 46 49 52
+//  34 39 42 47 48 53
+//  41 40 33
+
+HSV rgb_to_hsv(RGB rgb)
+{
+    HSV hsv;
+    unsigned char rgbMin, rgbMax;
+
+    rgbMin = rgb.r < rgb.g ? (rgb.r < rgb.b ? rgb.r : rgb.b) : (rgb.g < rgb.b ? rgb.g : rgb.b);
+    rgbMax = rgb.r > rgb.g ? (rgb.r > rgb.b ? rgb.r : rgb.b) : (rgb.g > rgb.b ? rgb.g : rgb.b);
+    
+    hsv.v = rgbMax;
+    if (hsv.v == 0)
+    {
+        hsv.h = 0;
+        hsv.s = 0;
+        return hsv;
+    }
+
+    hsv.s = 255 * (rgbMax - rgbMin) / hsv.v;
+    if (hsv.s == 0)
+    {
+        hsv.h = 0;
+        return hsv;
+    }
+
+    if (rgbMax == rgb.r)
+        hsv.h = 0 + 43 * (rgb.g - rgb.b) / (rgbMax - rgbMin);
+    else if (rgbMax == rgb.g)
+        hsv.h = 85 + 43 * (rgb.b - rgb.r) / (rgbMax - rgbMin);
+    else
+        hsv.h = 171 + 43 * (rgb.r - rgb.g) / (rgbMax - rgbMin);
+
+    return hsv;
+}
+
+RGB custom_cap_rgb(uint8_t r, uint8_t g, uint8_t b) {
+  RGB rgb = {g,r,b}; // deal with it
+  HSV hsv = rgb_to_hsv(rgb);
+  if (hsv.v > rgb_matrix_get_val()) {
+    hsv.v = rgb_matrix_get_val();
+  }
+  RGB rgb_result = hsv_to_rgb(hsv);
+  return rgb_result;
+}
+
+void custom_set_color_all(uint8_t r, uint8_t g, uint8_t b) {
+  RGB rgb = custom_cap_rgb(r, g, b);
+  rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
+}
+void custom_set_color(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
+  RGB rgb = custom_cap_rgb(r, g, b);
+  rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+}
+
 void keyboard_post_init_user(void) {
-  //rgb_matrix_set_color_all(RGB_NEON_PINK);
-  //rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+  //rgblight_setrgb_range(RGB_NEON_PINK, 0, 27);
+  //rgblight_sethsv_range(HSV_NEON_PINK, 0, 27);
+  //rgblight_sethsv_slave(HSV_NEON_CYAN);
+  rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+  custom_set_color(0, RGB_NEON_CYAN); 
+  custom_set_color(1, RGB_NEON_CYAN); 
+  custom_set_color(2, RGB_NEON_PINK); 
 }
 
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    //rgb_matrix_set_color_all(RGB_NEON_PINK);
+  uint8_t layer = get_highest_layer(layer_state);
 
-    /* rgb_matrix_set_color(19, 0xEB, 0xCB, 0x8B); */
-    /* rgb_matrix_set_color(49, RGB_NEON_CYAN); */
-    /* rgb_matrix_set_color(46, RGB_NEON_CYAN); */
-    /* rgb_matrix_set_color(43, RGB_NEON_CYAN); */
-    /* rgb_matrix_set_color(38, RGB_NEON_CYAN); */
+  switch(layer){ 
+    case _VIM:
+      custom_set_color_all(RGB_YELLOW);
+      break;
+    case _LOWER:
+      custom_set_color_all(RGB_BLUE);
+      /* rgb_matrix_set_color(LED_H, RGB_NEON_CYAN); */
+      /* rgb_matrix_set_color(LED_J, RGB_NEON_CYAN); */
+      /* rgb_matrix_set_color(LED_K, RGB_NEON_CYAN); */
+      /* rgb_matrix_set_color(LED_L, RGB_NEON_CYAN); */
+      /* rgb_set_list(LED_LIST_NUMROW, ARRAYSIZE(LED_LIST_NUMROW), RGB_NEON_PINK); */
+      /* highlight_debug_keys(); */
+
+      custom_set_color(1, RGB_RED); 
+      break;
+    case _RAISE:
+      break;
+    case _ADJUST:
+      custom_set_color_all(RGB_RED);
+      break;
+    default:
+      // default color
+      custom_set_color_all(RGB_NEON_PINK); 
+
+      // hjkl 
+      custom_set_color(34, RGB_NEON_CYAN); 
+      custom_set_color(39, RGB_NEON_CYAN); 
+      custom_set_color(42, RGB_NEON_CYAN); 
+      custom_set_color(47, RGB_NEON_CYAN); 
+      /* rgb_matrix_set_color(LED_ESC, RGB_NEON_CYAN); */
+      /* rgb_matrix_set_color(LED_BSPC, RGB_NEON_CYAN); */
+      /* rgb_matrix_set_color(LED_LCTL, RGB_NEON_CYAN); */
+      /* rgb_matrix_set_color(LED_RCTL, RGB_NEON_CYAN); */
+      break;
+  }
+
+  if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
+    custom_set_color(0, RGB_RED);
+  }
 }
 
 

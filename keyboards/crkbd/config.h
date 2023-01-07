@@ -69,4 +69,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_TAPPING
 //#define NO_ACTION_ONESHOT
 
-#define USE_SERIAL
+//#define USE_SERIAL
