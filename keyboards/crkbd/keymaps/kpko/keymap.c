@@ -19,13 +19,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include <stdio.h>
 
+// Custom keys
 #define LT_ESCV LT(1, KC_ESC)
 #define LT_QUOV LT(1, KC_QUOT)
 #define MT_CTLZ MT(MOD_LCTL, KC_Z)
 #define MT_CTLS MT(MOD_RCTL, KC_SLSH)
 #define MT_ALTX MT(MOD_LALT, KC_X)
-//#define MT_ALTS MT(MOD_RCTL, KC_SLSH)
-//
+
+// Home row mods
+// Left-hand home row mods
+#define GUI_A LGUI_T(KC_A)
+#define ALT_S LALT_T(KC_S)
+#define SFT_D LSFT_T(KC_D)
+#define CTL_F LCTL_T(KC_F)
+// Right-hand home row mods
+#define CTL_J RCTL_T(KC_J)
+#define SFT_K RSFT_T(KC_K)
+#define ALT_L LALT_T(KC_L)
+#define GUI_SCN RGUI_T(KC_SCLN)
+
+// Layers
 #define _DEFAULT 0
 #define _VIM 1
 #define _LOWER 2
@@ -37,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LT_ESCV,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, LT_QUOV,
+      LT_ESCV,   GUI_A,   ALT_S,   SFT_D,   CTL_F,    KC_G,                         KC_H,   CTL_J,   SFT_K,   ALT_L, GUI_SCN, LT_QUOV,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, MT_CTLZ, MT_ALTX,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, MT_CTLS, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
