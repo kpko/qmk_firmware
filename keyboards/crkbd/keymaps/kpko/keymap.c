@@ -405,10 +405,10 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
       custom_set_color_all(RGB_NEON_PINK); 
 
       // hjkl 
-      custom_set_color(LED_M, RGB_NEON_CYAN); 
-      custom_set_color(LED_N, RGB_NEON_CYAN); 
-      custom_set_color(LED_COMM, RGB_NEON_CYAN); 
-      custom_set_color(LED_DOT, RGB_NEON_CYAN); 
+      custom_set_color(LED_H, RGB_NEON_CYAN); 
+      custom_set_color(LED_J, RGB_NEON_CYAN); 
+      custom_set_color(LED_K, RGB_NEON_CYAN); 
+      custom_set_color(LED_L, RGB_NEON_CYAN); 
       /* rgb_matrix_set_color(LED_ESC, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_BSPC, RGB_NEON_CYAN); */
       /* rgb_matrix_set_color(LED_LCTL, RGB_NEON_CYAN); */
