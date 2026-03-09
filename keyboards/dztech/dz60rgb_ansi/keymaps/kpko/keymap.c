@@ -31,7 +31,7 @@ enum my_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_60_ansi(
-        KC_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,           KC_BSPC,
+        KC_GRV, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,           KC_BSPC,
         KC_TAB,           KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
         LT(_VIM, KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,
@@ -98,14 +98,14 @@ void highlight_debug_keys(void) {
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
   uint8_t layer = get_highest_layer(layer_state);
 
-  // If we set _VIM as default layer, we want to highlight as we do in _VIM 
+  // If we set _VIM as default layer, we want to highlight as we do in _VIM
   if(biton32(default_layer_state) == _VIM) {
       layer = _VIM;
   }
 
   bool hrm = false;
 
-  switch(layer){ 
+  switch(layer){
     case _FUN:
       rgb_matrix_set_color_all(RGB_OFF);
       //rgb_matrix_set_color(LED_N, RGB_NEON_PINK);
@@ -164,7 +164,7 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
       break;
   }
-      
+
   /* int leds = led_max - led_min; */
   /* for (uint8_t i = led_min; i <= led_max; i++) { */
   /*   HSV hsvi = {255 / leds * i, 255, 255 / leds * (led_min - i) * timer_read()}; */
